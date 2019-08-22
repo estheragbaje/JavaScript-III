@@ -46,6 +46,8 @@
   - Give persons the ability to poop.
   - When pooping, the stomach should empty.
 
+
+
   TASK 2
 
   - Build a Car constructor that takes model name and make.
@@ -108,10 +110,10 @@
 */
 
 /*
-  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
-  * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
-  * Instances of CharacterStats should have all of the same properties as GameObject.
-*/
+ * Inheritance chain: GameObject -> CharacterStats -> Humanoid
+ * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
+ * Instances of CharacterStats should have all of the same properties as GameObject.
+ */
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
@@ -174,3 +176,147 @@
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 */
+
+// TASK 1
+
+//   - Build a Person Constructor that takes name and age.
+//   - Give persons the ability to greet by returning a string stating name and age.
+//   - Give persons the ability to eat edibles.
+//   - When eating an edible, it should be pushed into a "stomach" property which is an array.
+//   - Give persons the ability to poop.
+//   - When pooping, the stomach should empty.
+
+//Solution to task 1
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+
+Person.prototype.greet = function() {
+  return `Hiii, my name is ${this.name} and I am ${this.age} years old`;
+};
+
+Person.prototype.eating = function(food) {
+  this.stomach.push(food);
+};
+
+Person.prototype.poop = function() {
+  this.stomach = [];
+};
+
+const sade = new Person("soso", 20);
+sade.eating("chicken");
+sade.eating("rice");
+sade.poop();
+console.log(sade.stomach);
+
+//TASK 2
+// - Build a Car constructor that takes model name and make.
+//   - Give cars the ability to drive a distance.
+//   - By driving a car, the distance driven should be added to an "odometer" property.
+//   - Give cars the ability to crash.
+//   - A crashed car can't be driven any more. Attempts return a string "I crashed at x miles!", x being the miles in the odometer.
+//   - Give cars the ability to be repaired.
+//   - A repaired car can be driven again.
+
+//Solution to task 2
+
+function Car(name, make) {
+  this.name = name;
+  this.make = make;
+  this.canBeDriven = true;
+}
+
+Car.prototype.drive = function(distance) {
+  this.odometer = distance;
+};
+Car.prototype.crash = function() {
+  this.canBeDriven = false;
+  return `I crashed at ${this.odometer} miles!`;
+};
+
+Car.prototype.repair = function() {
+  this.canBeDriven = true;
+};
+
+const ford = new Car("Ford", "Explorer");
+ford.drive(20);
+let crasher = ford.crash();
+console.log(crasher);
+ford.repair();
+console.log(ford);
+
+// TASK 3
+
+// - Build a Baby constructor that subclasses the Person built earlier.
+// - Babies of course inherit the ability to greet, which can be strange.
+// - Babies should have the ability to play, which persons don't.
+// - By playing, a string is returned with some text of your choosing.
+
+//Solution to task 3
+
+function Baby(name, age) {
+  Person.call(this, name, age);
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function() {
+  return `Daddy I want to play`;
+};
+
+const demi = new Baby("Demi", 1);
+console.log(demi);
+// TASK 4
+
+// Use your imagination and come up with constructors that allow to build objects
+// With amazing and original capabilities. Build 3 small ones, or a very
+// complicated one with lots of state. Surprise us!
+
+//Created a constructor that takes name, email and password during a sign up
+//Gave them the ability to login with their email and password
+//If user logs in succcessfully, it returns a string "I have successfully logged in"
+//If login is not successful, it returns "Email or Password Invalid"
+//Gave user the ability to reset password
+//Gave user the ability to log out
+
+//Solution to task 4
+function User(name, email, password) {
+  this.name = name;
+  this.email = email;
+  this.password = password;
+  this.isLoggedIn = true;
+}
+
+User.prototype.login = function(email, password) {
+  if (email === this.email && password === this.password) {
+    return `I have successfully logged in`;
+  } else {
+    return `Email or Password Invalid`;
+  }
+};
+
+User.prototype.logout = function() {
+  this.isLoggedIn = false;
+};
+
+User.prototype.resetPassword = function(newPassword) {
+  this.password = newPassword;
+  return `Password successfully reset`;
+};
+
+const segun = new User("Segun", "segun@yahoo.com", "segun001");
+console.log(segun);
+
+segun.logout();
+console.log(segun);
+
+const outcome = segun.login("segun@yahoo.com", "segun1");
+console.log(outcome);
+
+const outcome1 = segun.login("segun@yahoo.com", "segun001");
+console.log(outcome1);
+
+const outcome2 = segun.resetPassword("sage");
+console.log(outcome2);
+
+console.log(segun);
